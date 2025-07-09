@@ -1,0 +1,11 @@
+.footer {
+  background-color: #fcf5e5;
+  font-family: Poppins, Arial, Helvetica, sans-serif;
+  font-weight: 500;
+}
+
+.footer__copyright {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+}

@@ -21,6 +21,9 @@
 }
 
 .card__title {
+  color: #212121;
+  line-height: 120%;
+  font-size: 20px;
   display: -webkit-box;
   overflow: hidden;
   text-overflow: ellipsis;
