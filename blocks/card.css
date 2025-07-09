@@ -31,6 +31,10 @@
   -webkit-box-orient: vertical;
 }
 
+.card__like-button:hover {
+  opacity: 1;
+}
+
 @media screen and (max-width: 627px) {
   .card__image {
     height: 288px;
