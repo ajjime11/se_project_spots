@@ -25,6 +25,7 @@ const initialCards = [
   },
 ];
 
+// Keep scrolling for Stage 6
 // Edit Profile open/close
 const editProfileButton = document.querySelector(".profile__edit-button");
 const editProfileModal = document.querySelector("#edit-profile-modal");
@@ -33,13 +34,13 @@ const editProfileCloseButton = editProfileModal.querySelector(
 );
 
 editProfileButton.addEventListener("click", function () {
-  editProfileModal.classList.add("modal_is-opened");
+  openModal(editProfileModal);
   editProfileNameInput.value = profileNameEl.textContent;
   editProfileDescriptionInput.value = profileDescriptionEl.textContent;
 });
 
 editProfileCloseButton.addEventListener("click", function () {
-  editProfileModal.classList.remove("modal_is-opened");
+  closeModal(editProfileModal);
 });
 
 // New Post open/close
@@ -48,11 +49,11 @@ const newPostModal = document.querySelector("#new-post-modal");
 const newPostCloseButton = newPostModal.querySelector(".modal__close-button");
 
 newPostButton.addEventListener("click", function () {
-  newPostModal.classList.add("modal_is-opened");
+  openModal(newPostModal);
 });
 
 newPostCloseButton.addEventListener("click", function () {
-  newPostModal.classList.remove("modal_is-opened");
+  closeModal(newPostModal);
 });
 
 // Stage 6
@@ -69,7 +70,7 @@ function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileNameEl.textContent = editProfileNameInput.value;
   profileDescriptionEl.textContent = editProfileDescriptionInput.value;
-  editProfileModal.classList.remove("modal_is-opened");
+  closeModal(editProfileModal);
 }
 editProfileFormEl.addEventListener("submit", handleProfileFormSubmit);
 
@@ -80,15 +81,23 @@ const newPostFormEl = newPostModal.querySelector(".modal__form");
 
 function handleAddCardSubmit(evt) {
   evt.preventDefault();
-  console.log(editImageLinkInput.value);
-  console.log(editCaptionInput.value);
-  newPostModal.classList.remove("modal_is-opened");
-  evt.target.reset();
+  console.log(editImageLinkInput.value); // logs the value to the console
+  console.log(editCaptionInput.value); // logs the value to the console
+  closeModal(newPostModal);
+  evt.target.reset(); // resets the form after submission
 }
 newPostFormEl.addEventListener("submit", handleAddCardSubmit);
 
-// Stage 5 function
+// Stage 5 forEach function
 initialCards.forEach(function (card) {
   console.log(card.name);
   console.log(card.link);
 });
+
+function openModal(modal) {
+  modal.classList.add("modal_is-opened");
+}
+
+function closeModal(modal) {
+  modal.classList.remove("modal_is-opened");
+}
