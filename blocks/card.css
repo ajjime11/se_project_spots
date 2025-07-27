@@ -1,8 +1,12 @@
+CSS .card {
+  position: relative;
+}
+
 .card__image {
-  height: 413px;
-  width: 100%;
-  object-fit: cover;
   display: block;
+  width: 100%;
+  height: 413px;
+  object-fit: cover;
   border-radius: 8px;
 }
 
@@ -12,29 +16,59 @@
   justify-content: space-between;
 }
 
+.card__title {
+  color: #212121;
+  font-size: 20px;
+  line-height: 120%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
 .card__like-button {
   background-image: url(../images/like-icon.png);
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
   width: 23px;
   height: 20px;
-  border: none;
-  background-color: transparent;
+  flex-shrink: 0;
+  cursor: pointer;
   opacity: 40%;
   transition: opacity 0.3s ease-in-out;
+}
+
+.card__delete-button {
+  background-image: url(../images/delete.png);
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
   cursor: pointer;
 }
 
-.card__title {
-  color: #212121;
-  line-height: 120%;
-  font-size: 20px;
-  display: -webkit-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.card__like-button_active {
+  background-image: url(../images/liked.svg);
+  opacity: 1;
 }
 
 .card__like-button:hover {
   opacity: 1;
+}
+
+.card__like-button_active:hover {
+  opacity: 0.4;
+}
+
+.card__delete-button:hover {
+  background-image: url(../images/deleted.png);
 }
 
 @media screen and (max-width: 627px) {
