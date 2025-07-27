@@ -70,11 +70,6 @@ function closeModal(modal) {
   modal.classList.remove("modal_is-opened");
 }
 
-function renderCard(cardData, container) {
-  const cardElement = getCardElement(cardData);
-  container.prepend(cardElement);
-}
-
 function getCardElement(data) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardTitleEl = cardElement.querySelector(".card__title");
@@ -91,7 +86,7 @@ function getCardElement(data) {
   });
 
   cardDeleteBtnEl.addEventListener("click", () => {
-    cardElement.remove();
+    cardDeleteBtnEl.closest(".card").remove();
   });
 
   cardImageEl.addEventListener("click", () => {
@@ -115,7 +110,8 @@ function handleAddCardSubmit(evt) {
   evt.preventDefault();
   const name = newPostCaptionInput.value;
   const link = newPostImageLinkInput.value;
-  renderCard({ name, link }, cardsList);
+  const cardElement = getCardElement({ name, link });
+  cardsList.prepend(cardElement);
   closeModal(newPostModal);
   evt.target.reset();
 }
@@ -126,16 +122,21 @@ editProfileButton.addEventListener("click", () => {
   openModal(editProfileModal);
 });
 
-newPostButton.addEventListener("click", () => openModal(newPostModal));
-
 editProfileCloseButton.addEventListener("click", () =>
   closeModal(editProfileModal)
 );
-newPostCloseButton.addEventListener("click", () => closeModal(newPostModal));
-previewModalCloseBtn.addEventListener("click", () => closeModal(previewModal));
 
 editProfileFormEl.addEventListener("submit", handleProfileFormSubmit);
+
+newPostButton.addEventListener("click", () => openModal(newPostModal));
+
+newPostCloseButton.addEventListener("click", () => closeModal(newPostModal));
+
 newPostFormEl.addEventListener("submit", handleAddCardSubmit);
+
+previewModalCloseBtn.addEventListener("click", () => {
+  closeModal(previewModal);
+});
 
 initialCards.forEach((card) => {
   const cardElement = getCardElement(card);
