@@ -103,7 +103,7 @@
 
 .modal__image {
   display: block;
-  width: 100%;
+  max-width: 100%;
   max-width: 80vw;
   max-height: 80vh;
   object-fit: contain;
@@ -114,6 +114,10 @@
   color: white;
   font-size: 20px;
   line-height: 1.2;
+  background-color: #212121;
+  padding: 4px 8px;
+  width: fit-content;
+  border-radius: 8px;
 }
 
 .modal__close-button:hover {
