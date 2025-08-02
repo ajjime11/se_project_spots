@@ -70,7 +70,8 @@
 .modal__label {
   color: #212121b2;
   font-size: 16px;
-  margin: 0 0 32px;
+  margin-bottom: 32px;
+  display: block;
 }
 
 .modal__input {
@@ -81,6 +82,13 @@
   border-radius: 8px;
   padding: 16px 12px;
   margin: 8px 0 0;
+}
+
+.modal__error {
+  display: block;
+  /* TO-DO - use correct color and font sizes */
+  color: red;
+  margin-top: 8px;
 }
 
 .modal__input::placeholder {
