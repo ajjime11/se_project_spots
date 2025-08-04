@@ -1,3 +1,12 @@
+const settings = {
+  formSelector: ".modal__form",
+  inputSelector: ".modal__input",
+  submitButtonSelector: ".modal__button",
+  inactiveButtonClass: "modal__button_disabled",
+  inputErrorClass: "modal__input_type_error",
+  errorClass: "modal__error_visible",
+};
+
 const initialCards = [
   {
     name: "Golden Gate Bridge",
@@ -62,6 +71,8 @@ const previewModalCloseBtn = previewModal.querySelector(".modal__close-button");
 const previewImageEl = previewModal.querySelector(".modal__image");
 const previewCaptionEl = previewModal.querySelector(".modal__caption");
 
+const cardSubmitBtn = document.querySelector(".modal__button");
+
 function openModal(modal) {
   modal.classList.add("modal_is-opened");
 }
@@ -112,13 +123,27 @@ function handleAddCardSubmit(evt) {
   const link = newPostImageLinkInput.value;
   const cardElement = getCardElement({ name, link });
   cardsList.prepend(cardElement);
-  closeModal(newPostModal);
   evt.target.reset();
+  disableButton(cardSubmitBtn, settings);
+  closeModal(newPostModal);
 }
 
 editProfileButton.addEventListener("click", () => {
   editProfileNameInput.value = profileNameEl.textContent;
   editProfileDescriptionInput.value = profileDescriptionEl.textContent;
+  const editProfileInputList = [
+    editProfileNameInput,
+    editProfileDescriptionInput,
+  ];
+  const editProfileSubmitBtn =
+    editProfileFormEl.querySelector(".modal__button");
+  resetValidation(
+    editProfileFormEl,
+    editProfileInputList,
+    editProfileSubmitBtn,
+    settings
+  );
+
   openModal(editProfileModal);
 });
 
@@ -128,7 +153,12 @@ editProfileCloseButton.addEventListener("click", () =>
 
 editProfileFormEl.addEventListener("submit", handleProfileFormSubmit);
 
-newPostButton.addEventListener("click", () => openModal(newPostModal));
+newPostButton.addEventListener("click", () => {
+  const newPostInputList = [newPostImageLinkInput, newPostCaptionInput];
+  const newPostSubmitBtn = newPostFormEl.querySelector(".modal__button");
+  resetValidation(newPostFormEl, newPostInputList, newPostSubmitBtn, settings);
+  openModal(newPostModal);
+});
 
 newPostCloseButton.addEventListener("click", () => closeModal(newPostModal));
 
@@ -142,3 +172,5 @@ initialCards.forEach((card) => {
   const cardElement = getCardElement(card);
   cardsList.append(cardElement);
 });
+
+enableValidation(settings);
