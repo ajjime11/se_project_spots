@@ -75,10 +75,27 @@ const cardSubmitBtn = document.querySelector(".modal__button");
 
 function openModal(modal) {
   modal.classList.add("modal_is-opened");
+  document.addEventListener("keydown", closeModalByEscape);
+  modal.addEventListener("mousedown", closeModalByOverlay);
 }
 
 function closeModal(modal) {
   modal.classList.remove("modal_is-opened");
+  document.removeEventListener("keydown", closeModalByEscape);
+  modal.removeEventListener("mousedown", closeModalByOverlay);
+}
+
+function closeModalByEscape(evt) {
+  if (evt.key === "Escape") {
+    const modalIsOpened = document.querySelector(".modal_is-opened");
+    closeModal(modalIsOpened);
+  }
+}
+
+function closeModalByOverlay(evt) {
+  if (evt.target === evt.currentTarget) {
+    closeModal(evt.target);
+  }
 }
 
 function getCardElement(data) {
