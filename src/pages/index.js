@@ -6,6 +6,8 @@ import {
   disableButton,
 } from "../scripts/validation.js";
 
+import Api from "../utils/Api.js";
+
 const settings = {
   formSelector: ".modal__form",
   inputSelector: ".modal__input",
@@ -45,6 +47,16 @@ const initialCards = [
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/6-photo-by-moritz-feldmann-from-pexels.jpg",
   },
 ];
+
+// index.js
+
+const api = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1",
+  headers: {
+    authorization: "73b45784-19b2-4053-852d-56fa72f710be", // Replace with your actual token
+    "Content-Type": "application/json",
+  },
+});
 
 const cardsList = document.querySelector(".cards__list");
 const cardTemplate = document
@@ -193,9 +205,11 @@ previewModalCloseBtn.addEventListener("click", () => {
   closeModal(previewModal);
 });
 
-initialCards.forEach((card) => {
-  const cardElement = getCardElement(card);
-  cardsList.append(cardElement);
+api.getInitialCards().then((cards) => {
+  cards.forEach((item) => {
+    const cardElement = getCardElement(item);
+    cardsList.append(cardElement);
+  });
 });
 
 enableValidation(settings);
