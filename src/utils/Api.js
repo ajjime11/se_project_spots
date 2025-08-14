@@ -6,6 +6,10 @@ class Api {
     this._headers = headers;
   }
 
+  getAppInfo() {
+    return Promise.all([this.getInitialCards(), this.getUserInfo()]);
+  }
+
   _handleServerResponse(res) {
     if (res.ok) {
       return res.json();
@@ -14,12 +18,37 @@ class Api {
   }
 
   getInitialCards() {
-    return fetch("https://around-api.en.tripleten-services.com/v1/cards", {
-      headers: {
-        authorization: "73b45784-19b2-4053-852d-56fa72f710be",
-        "Content-Type": "application/json",
-      },
+    return fetch(`${this._baseUrl}/cards`, {
+      headers: this._headers,
+    }).then(this._handleServerResponse);
+  }
+
+  getUserInfo() {
+    return fetch(`${this._baseUrl}/users/me`, {
+      headers: this._headers,
+    }).then(this._handleServerResponse);
+  }
+
+  editUserInfo({ name, about }) {
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        name,
+        about,
+      }),
+    }).then(this._handleServerResponse);
+  }
+
+  editAvatarInfo({ avatar }) {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar,
+      }),
     }).then(this._handleServerResponse);
   }
 }
+
 export default Api;

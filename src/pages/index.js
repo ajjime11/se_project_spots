@@ -48,8 +48,6 @@ const initialCards = [
   },
 ];
 
-// index.js
-
 const api = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1",
   headers: {
@@ -65,6 +63,7 @@ const cardTemplate = document
 
 const profileNameEl = document.querySelector(".profile__name");
 const profileDescriptionEl = document.querySelector(".profile__description");
+const profileAvatarEl = document.querySelector(".profile__avatar");
 
 const editProfileModal = document.querySelector("#edit-profile-modal");
 const editProfileButton = document.querySelector(".profile__edit-button");
@@ -92,6 +91,16 @@ const previewImageEl = previewModal.querySelector(".modal__image");
 const previewCaptionEl = previewModal.querySelector(".modal__caption");
 
 const cardSubmitBtn = document.querySelector(".modal__button");
+
+// Corrected selectors for the avatar modal elements
+const avatarModal = document.querySelector("#edit-avatar-modal");
+const avatarForm = avatarModal.querySelector(".modal__form");
+const avatarSubmitBtn = avatarModal.querySelector(".modal__button");
+const avatarModalCloseBtn = avatarModal.querySelector(".modal__close-button");
+const avatarInput = avatarModal.querySelector("#avatar-name-input");
+const avatarEditButton = document.querySelector(".profile__avatar-edit-btn");
+
+// Do something similar to what we did for avatar but instead for the delete modal
 
 function openModal(modal) {
   modal.classList.add("modal_is-opened");
@@ -134,6 +143,10 @@ function getCardElement(data) {
   });
 
   cardDeleteBtnEl.addEventListener("click", () => {
+    // This is where we need to add the new buttons
+    // The new buttons will basically verify the user does, indeed,
+    // want to delete the image
+    // Open the modal to delete the image
     cardDeleteBtnEl.closest(".card").remove();
   });
 
@@ -149,9 +162,20 @@ function getCardElement(data) {
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  profileNameEl.textContent = editProfileNameInput.value;
-  profileDescriptionEl.textContent = editProfileDescriptionInput.value;
-  closeModal(editProfileModal);
+  api
+    .editUserInfo({
+      name: editProfileNameInput.value,
+      about: editProfileDescriptionInput.value,
+    })
+    .then((data) => {
+      // Use data argument from the server response
+      profileNameEl.textContent = data.name;
+      profileDescriptionEl.textContent = data.about;
+      closeModal(editProfileModal);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
 function handleAddCardSubmit(evt) {
@@ -205,11 +229,37 @@ previewModalCloseBtn.addEventListener("click", () => {
   closeModal(previewModal);
 });
 
-api.getInitialCards().then((cards) => {
-  cards.forEach((item) => {
-    const cardElement = getCardElement(item);
-    cardsList.append(cardElement);
+// Event listener for the avatar edit button
+avatarEditButton.addEventListener("click", () => openModal(avatarModal));
+avatarModalCloseBtn.addEventListener("click", () => closeModal(avatarModal));
+
+function handleAvatarSubmit(evt) {
+  evt.preventDefault();
+  api
+    .editAvatarInfo({ avatar: avatarInput.value })
+    .then((data) => {
+      profileAvatarEl.src = data.avatar;
+      closeModal(avatarModal);
+    })
+    .catch(console.error);
+}
+
+avatarForm.addEventListener("submit", handleAvatarSubmit);
+
+api
+  .getAppInfo()
+  .then(([cards, user]) => {
+    cards.forEach((item) => {
+      const cardElement = getCardElement(item);
+      cardsList.append(cardElement);
+    });
+    // Handle the user's information
+    profileAvatarEl.src = user.avatar;
+    profileNameEl.textContent = user.name;
+    profileDescriptionEl.textContent = user.about;
+  })
+  .catch((err) => {
+    console.error(err);
   });
-});
 
 enableValidation(settings);
