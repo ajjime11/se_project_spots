@@ -101,9 +101,12 @@ const avatarEditButton = document.querySelector(".profile__avatar-edit-btn");
 
 const deleteModal = document.querySelector("#delete-modal");
 const deleteModalCloseBtn = deleteModal.querySelector(".modal__close-button");
-const deleteConfirmBtn = deleteModal.querySelector("#delete-confirm-button");
-
 const deleteCancelBtn = document.querySelector("#delete-cancel-button");
+
+let cardToDelete = null;
+const deleteConfirmBtn = deleteModal.querySelector(
+  ".modal__button_type_delete"
+);
 
 function openModal(modal) {
   modal.classList.add("modal_is-opened");
@@ -146,11 +149,9 @@ function getCardElement(data) {
   });
 
   cardDeleteBtnEl.addEventListener("click", () => {
+    console.log("Trash can icon clicked!"); // <--- New line added here
     openModal(deleteModal);
-    deleteConfirmBtn.onclick = () => {
-      cardDeleteBtnEl.closest(".card").remove();
-      closeModal(deleteModal);
-    };
+    cardToDelete = cardDeleteBtnEl.closest(".card");
   });
 
   cardImageEl.addEventListener("click", () => {
@@ -250,6 +251,13 @@ avatarForm.addEventListener("submit", handleAvatarSubmit);
 deleteModalCloseBtn.addEventListener("click", () => closeModal(deleteModal));
 
 deleteCancelBtn.addEventListener("click", () => closeModal(deleteModal));
+
+deleteConfirmBtn.addEventListener("click", () => {
+  if (cardToDelete) {
+    cardToDelete.remove();
+  }
+  closeModal(deleteModal);
+});
 
 api
   .getAppInfo()
