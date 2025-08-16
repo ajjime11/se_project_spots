@@ -98,12 +98,18 @@
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.profile__avatar-edit-content {
+  position: absolute;
+  bottom: 12px;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 500;
 }
 
 .profile__avatar-container:hover .profile__avatar-edit-btn {
@@ -111,18 +117,14 @@
 }
 
 .profile__avatar-edit-icon {
-  width: 26px;
-  height: 26px;
+  width: 16px;
+  height: 16px;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
 }
 
 .profile__avatar-container:hover .profile__avatar-edit-icon {
   opacity: 1;
-}
-
-.profile__avatar-edit-btn::after {
-  content: "Edit Avatar";
 }
 
 @media screen and (max-width: 627px) {

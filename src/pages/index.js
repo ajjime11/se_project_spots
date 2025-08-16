@@ -51,7 +51,7 @@ const initialCards = [
 const api = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1",
   headers: {
-    authorization: "73b45784-19b2-4053-852d-56fa72f710be", // Replace with your actual token
+    authorization: "73b45784-19b2-4053-852d-56fa72f710be",
     "Content-Type": "application/json",
   },
 });
@@ -92,7 +92,6 @@ const previewCaptionEl = previewModal.querySelector(".modal__caption");
 
 const cardSubmitBtn = document.querySelector(".modal__button");
 
-// Corrected selectors for the avatar modal elements
 const avatarModal = document.querySelector("#edit-avatar-modal");
 const avatarForm = avatarModal.querySelector(".modal__form");
 const avatarSubmitBtn = avatarModal.querySelector(".modal__button");
@@ -100,7 +99,11 @@ const avatarModalCloseBtn = avatarModal.querySelector(".modal__close-button");
 const avatarInput = avatarModal.querySelector("#avatar-name-input");
 const avatarEditButton = document.querySelector(".profile__avatar-edit-btn");
 
-// Do something similar to what we did for avatar but instead for the delete modal
+const deleteModal = document.querySelector("#delete-modal");
+const deleteModalCloseBtn = deleteModal.querySelector(".modal__close-button");
+const deleteConfirmBtn = deleteModal.querySelector("#delete-confirm-button");
+
+const deleteCancelBtn = document.querySelector("#delete-cancel-button");
 
 function openModal(modal) {
   modal.classList.add("modal_is-opened");
@@ -143,11 +146,11 @@ function getCardElement(data) {
   });
 
   cardDeleteBtnEl.addEventListener("click", () => {
-    // This is where we need to add the new buttons
-    // The new buttons will basically verify the user does, indeed,
-    // want to delete the image
-    // Open the modal to delete the image
-    cardDeleteBtnEl.closest(".card").remove();
+    openModal(deleteModal);
+    deleteConfirmBtn.onclick = () => {
+      cardDeleteBtnEl.closest(".card").remove();
+      closeModal(deleteModal);
+    };
   });
 
   cardImageEl.addEventListener("click", () => {
@@ -168,7 +171,6 @@ function handleProfileFormSubmit(evt) {
       about: editProfileDescriptionInput.value,
     })
     .then((data) => {
-      // Use data argument from the server response
       profileNameEl.textContent = data.name;
       profileDescriptionEl.textContent = data.about;
       closeModal(editProfileModal);
@@ -229,7 +231,6 @@ previewModalCloseBtn.addEventListener("click", () => {
   closeModal(previewModal);
 });
 
-// Event listener for the avatar edit button
 avatarEditButton.addEventListener("click", () => openModal(avatarModal));
 avatarModalCloseBtn.addEventListener("click", () => closeModal(avatarModal));
 
@@ -246,6 +247,10 @@ function handleAvatarSubmit(evt) {
 
 avatarForm.addEventListener("submit", handleAvatarSubmit);
 
+deleteModalCloseBtn.addEventListener("click", () => closeModal(deleteModal));
+
+deleteCancelBtn.addEventListener("click", () => closeModal(deleteModal));
+
 api
   .getAppInfo()
   .then(([cards, user]) => {
@@ -253,7 +258,6 @@ api
       const cardElement = getCardElement(item);
       cardsList.append(cardElement);
     });
-    // Handle the user's information
     profileAvatarEl.src = user.avatar;
     profileNameEl.textContent = user.name;
     profileDescriptionEl.textContent = user.about;
