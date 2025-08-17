@@ -49,6 +49,27 @@ class Api {
       }),
     }).then(this._handleServerResponse);
   }
+
+  deleteCard(id) {
+    return fetch(`${this._baseUrl}/cards/${id}`, {
+      method: "DELETE",
+      headers: this._headers,
+    }).then(this._handleServerResponse);
+  }
+
+  likeCard(id) {
+    return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+      method: "PUT",
+      headers: this._headers,
+    }).then(this._handleServerResponse);
+  }
+
+  unlikeCard(id) {
+    return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+      method: "DELETE",
+      headers: this._headers,
+    }).then(this._handleServerResponse);
+  }
 }
 
 export default Api;

@@ -103,7 +103,9 @@ const deleteModal = document.querySelector("#delete-modal");
 const deleteModalCloseBtn = deleteModal.querySelector(".modal__close-button");
 const deleteCancelBtn = document.querySelector("#delete-cancel-button");
 
+let cardIdToDelete = null;
 let cardToDelete = null;
+
 const deleteConfirmBtn = deleteModal.querySelector(
   ".modal__button_type_delete"
 );
@@ -133,6 +135,27 @@ function closeModalByOverlay(evt) {
   }
 }
 
+function handleDeleteCard(cardElement, data) {
+  cardToDelete = cardElement;
+  cardIdToDelete = data._id;
+  openModal(deleteModal);
+}
+
+function handleDeleteSubmit(evt) {
+  evt.preventDefault();
+  api
+    .deleteCard(cardIdToDelete)
+    .then(() => {
+      if (cardToDelete) {
+        cardToDelete.remove();
+      }
+      closeModal(deleteModal);
+    })
+    .catch((err) => {
+      console.error("Failed to delete card:", err);
+    });
+}
+
 function getCardElement(data) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardTitleEl = cardElement.querySelector(".card__title");
@@ -145,14 +168,30 @@ function getCardElement(data) {
   cardTitleEl.textContent = data.name;
 
   cardLikeBtnEl.addEventListener("click", () => {
-    cardLikeBtnEl.classList.toggle("card__like-button_active");
+    const isLiked = cardLikeBtnEl.classList.contains(
+      "card__like-button_active"
+    );
+
+    if (isLiked) {
+      api
+        .unlikeCard(data._id)
+        .then(() => {
+          cardLikeBtnEl.classList.remove("card__like-button_active");
+        })
+        .catch(console.error);
+    } else {
+      api
+        .likeCard(data._id)
+        .then(() => {
+          cardLikeBtnEl.classList.add("card__like-button_active");
+        })
+        .catch(console.error);
+    }
   });
 
-  cardDeleteBtnEl.addEventListener("click", () => {
-    console.log("Trash can icon clicked!"); // <--- New line added here
-    openModal(deleteModal);
-    cardToDelete = cardDeleteBtnEl.closest(".card");
-  });
+  cardDeleteBtnEl.addEventListener("click", () =>
+    handleDeleteCard(cardElement, data)
+  );
 
   cardImageEl.addEventListener("click", () => {
     previewImageEl.src = data.link;
@@ -160,6 +199,10 @@ function getCardElement(data) {
     previewCaptionEl.textContent = data.name;
     openModal(previewModal);
   });
+
+  if (data.isLiked) {
+    cardLikeBtnEl.classList.add("card__like-button_active");
+  }
 
   return cardElement;
 }
@@ -252,12 +295,7 @@ deleteModalCloseBtn.addEventListener("click", () => closeModal(deleteModal));
 
 deleteCancelBtn.addEventListener("click", () => closeModal(deleteModal));
 
-deleteConfirmBtn.addEventListener("click", () => {
-  if (cardToDelete) {
-    cardToDelete.remove();
-  }
-  closeModal(deleteModal);
-});
+deleteConfirmBtn.addEventListener("click", handleDeleteSubmit);
 
 api
   .getAppInfo()
