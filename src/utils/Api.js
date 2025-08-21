@@ -70,6 +70,17 @@ class Api {
       headers: this._headers,
     }).then(this._handleServerResponse);
   }
+
+  addCard({ name, link }) {
+    return fetch(`${this._baseUrl}/cards`, {
+      method: "POST",
+      headers: this._headers,
+      body: JSON.stringify({
+        name,
+        link,
+      }),
+    }).then(this._handleServerResponse);
+  }
 }
 
 export default Api;

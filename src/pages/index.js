@@ -99,16 +99,16 @@ const avatarModalCloseBtn = avatarModal.querySelector(".modal__close-button");
 const avatarInput = avatarModal.querySelector("#avatar-name-input");
 const avatarEditButton = document.querySelector(".profile__avatar-edit-btn");
 
-const deleteModal = document.querySelector("#delete-modal");
-const deleteModalCloseBtn = deleteModal.querySelector(".modal__close-button");
-const deleteCancelBtn = document.querySelector("#delete-cancel-button");
+//const deleteModal = document.querySelector("#delete-modal");
+//const deleteModalCloseBtn = deleteModal.querySelector(".modal__close-button");
+//const deleteCancelBtn = document.querySelector("#delete-cancel-button");
 
-let cardIdToDelete = null;
-let cardToDelete = null;
+//let cardIdToDelete = null;
+//let cardToDelete = null;
 
-const deleteConfirmBtn = deleteModal.querySelector(
-  ".modal__button_type_delete"
-);
+//const deleteConfirmBtn = deleteModal.querySelector(
+//".modal__button_type_delete"
+//);
 
 function openModal(modal) {
   modal.classList.add("modal_is-opened");
@@ -135,33 +135,33 @@ function closeModalByOverlay(evt) {
   }
 }
 
-function handleDeleteCard(cardElement, data) {
-  cardToDelete = cardElement;
-  cardIdToDelete = data._id;
-  openModal(deleteModal);
-}
+//function handleDeleteCard(cardElement, data) {
+//cardToDelete = cardElement;
+//cardIdToDelete = data._id;
+//openModal(deleteModal);
+//}
 
-function handleDeleteSubmit(evt) {
-  evt.preventDefault();
-  api
-    .deleteCard(cardIdToDelete)
-    .then(() => {
-      if (cardToDelete) {
-        cardToDelete.remove();
-      }
-      closeModal(deleteModal);
-    })
-    .catch((err) => {
-      console.error("Failed to delete card:", err);
-    });
-}
+//function handleDeleteSubmit(evt) {
+//evt.preventDefault();
+//api
+//.deleteCard(cardIdToDelete)
+//.then(() => {
+//if (cardToDelete) {
+//cardToDelete.remove();
+//}
+//closeModal(deleteModal);
+//})
+//.catch((err) => {
+//console.error("Failed to delete card:", err);
+//});
+//}
 
 function getCardElement(data) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardTitleEl = cardElement.querySelector(".card__title");
   const cardImageEl = cardElement.querySelector(".card__image");
   const cardLikeBtnEl = cardElement.querySelector(".card__like-button");
-  const cardDeleteBtnEl = cardElement.querySelector(".card__delete-button");
+  //const cardDeleteBtnEl = cardElement.querySelector(".card__delete-button");
 
   cardImageEl.src = data.link;
   cardImageEl.alt = data.name;
@@ -189,9 +189,9 @@ function getCardElement(data) {
     }
   });
 
-  cardDeleteBtnEl.addEventListener("click", () =>
-    handleDeleteCard(cardElement, data)
-  );
+  //cardDeleteBtnEl.addEventListener("click", () =>
+  //handleDeleteCard(cardElement, data)
+  //);
 
   cardImageEl.addEventListener("click", () => {
     previewImageEl.src = data.link;
@@ -228,11 +228,19 @@ function handleAddCardSubmit(evt) {
   evt.preventDefault();
   const name = newPostCaptionInput.value;
   const link = newPostImageLinkInput.value;
-  const cardElement = getCardElement({ name, link });
-  cardsList.prepend(cardElement);
-  evt.target.reset();
-  disableButton(cardSubmitBtn, settings);
-  closeModal(newPostModal);
+
+  api
+    .addCard({ name, link })
+    .then((data) => {
+      const cardElement = getCardElement(data);
+      cardsList.prepend(cardElement);
+      evt.target.reset();
+      disableButton(cardSubmitBtn, settings);
+      closeModal(newPostModal);
+    })
+    .catch((err) => {
+      console.error("Failed to add new card:", err);
+    });
 }
 
 editProfileButton.addEventListener("click", () => {
@@ -291,11 +299,11 @@ function handleAvatarSubmit(evt) {
 
 avatarForm.addEventListener("submit", handleAvatarSubmit);
 
-deleteModalCloseBtn.addEventListener("click", () => closeModal(deleteModal));
+//deleteModalCloseBtn.addEventListener("click", () => closeModal(deleteModal));
 
-deleteCancelBtn.addEventListener("click", () => closeModal(deleteModal));
+//deleteCancelBtn.addEventListener("click", () => closeModal(deleteModal));
 
-deleteConfirmBtn.addEventListener("click", handleDeleteSubmit);
+//deleteConfirmBtn.addEventListener("click", handleDeleteSubmit);
 
 api
   .getAppInfo()
