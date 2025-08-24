@@ -1,4 +1,5 @@
 .modal {
+  font-family: "Poppins", Arial, Helvetica, sans-serif;
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s linear 0.5s, opacity 0.5s linear;
@@ -30,6 +31,11 @@
   padding: 32px 50px;
 }
 
+.modal__container_type_delete {
+  max-width: 550px;
+  padding: 24px 32px;
+}
+
 .modal__image-container {
   position: relative;
 }
@@ -57,14 +63,41 @@
   right: -52.5px;
 }
 
+.modal__close-button_type_delete {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-image: url(../images/exit-icon.svg);
+  background-color: transparent;
+  width: 24px;
+  height: 24px;
+  opacity: 0.4;
+}
+
 .modal__title {
   font-size: 32px;
   margin: 0 0 32px;
 }
 
+.modal__heading_type_delete {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0 0 32px 0;
+  color: black;
+  text-align: left;
+}
+
 .modal__form {
   display: flex;
   flex-direction: column;
+}
+
+.modal__form2 {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .modal__label {
@@ -138,6 +171,52 @@
   margin-top: 8px;
   width: fit-content;
   border-radius: 8px;
+}
+
+.modal__button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+}
+
+.modal__button_type_delete {
+  display: flex;
+  border-radius: 8px;
+  background-color: #ff6565;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: opacity 0.3s ease-in-out;
+  max-width: 156px;
+  width: 100%;
+  height: 40px;
+}
+
+.modal__button_type_cancel {
+  display: flex;
+  border-radius: 8px;
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: opacity 0.3s ease-in-out;
+  max-width: 156px;
+  width: 100%;
+  height: 40px;
+}
+
+.modal__button_type_delete:hover {
+  background-color: #ff3333;
+}
+
+.modal__button_type_cancel:hover {
+  background-color: black;
+  color: white;
 }
 
 .modal__close-button:hover {
