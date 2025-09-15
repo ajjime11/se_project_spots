@@ -5,10 +5,6 @@ Overview
 
 Welcome to the Spots project! This is my third project in the TripleTen Software Engineering bootcamp, a significant step in my journey to becoming a professional developer. As I continue to build my portfolio and transition into a tech career, this project serves as a demonstration of my skills in responsive web design, specifically for popular screen sizes.
 
-Figma
-
-Link to the project on Figma
-
 Images
 
 For this project, I practiced a crucial industry skill: optimizing images directly from Figma. This ensures faster load times and a more efficient user experience. To further enhance performance, I've used tools like TinyPNG to compress the image assets.
